@@ -1,19 +1,18 @@
-const express = require ("express")
+import express from "express"
 const app = express()
-const mongoose = require ("mongoose")
-const Contact = require("./models/contacts.models")
 
+import contactRoutes from "./routes/contact.routes.js"
+import {connectDB} from "./config/database.js"
 
-
-// databse connection
-mongoose.connect('mongodb://127.0.0.1:27017/contact-crud')
-
-
+const PORT = process.env.PORT 
 //Middleware
-
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended:false}))
 app.use(express.static('public'))
+app.use("/",contactRoutes)     
+
+// Database connection
+connectDB()
 
 
 // app.get('/',(req, res)=>{
@@ -24,44 +23,9 @@ app.use(express.static('public'))
 //    );
 // })
 
-app.get('/',async (req,res) => { 
-   
-    const contacts = await Contact.find()
-    res.render('home',{contacts})
-    })
-app.get('/show-contact/:id',async (req,res)=>{ 
-    const contact = await Contact.findOne({_id:req.params.id })
-    // res.json(contact)    
-    
-    res.render('show-contact',{contact})
 
+
+
+app.listen(PORT, ()=>{
+    console.log("SERVER IS WORKING NOW ${PORT}")
 })
-app.get('/add-contact', (req,res) =>{ res.render('add-contact')
-})
-
-
-app.post('/add-contact', async(req,res)=>{
-    await Contact.create(req.body) 
-    res.redirect("/")})
-
-
-app.get('/update-contact/:id', async(req,res) => { 
-    const contact = await Contact.findById(req.params.id)
-    res.render('update-contact',{contact})   
-})
-
-app.post('/update-contact/:id', async(req,res)=>{
-
-await Contact.findByIdAndUpdate(req.params.id, req.body)
-    //
-res.redirect("/")
- })
-app.get('/delete-contact/:id',async(req,res)=>{ 
-await Contact.findByIdAndDelete(req.params.id)
-res.redirect("/")   
-
-    
-})
-
-
-app.listen(3000, ()=>{console.log("SERVER IS WORKING NOW")})
