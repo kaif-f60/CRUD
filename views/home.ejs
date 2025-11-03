@@ -10,6 +10,7 @@
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
         <tr>
+          <th>SNr</th>
           <th>First Name</th>
           <th>Last Name</th>
           <th>Email</th>
@@ -18,8 +19,10 @@
         </tr>
       </thead>
       <tbody>
+        <% var srno=1; %>
         <%    contacts.forEach(contact => { %>
           <tr>
+            <td><%= srno++ %></td>
           <td><%= contact.first_name %></td>
           <td><%= contact.last_name %></td>
           <td><%= contact.email %></td>
