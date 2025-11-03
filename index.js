@@ -27,5 +27,5 @@ connectDB()
 
 
 app.listen(PORT, ()=>{
-    console.log("SERVER IS WORKING NOW ${PORT}")
+    console.log(`SERVER IS WORKING NOW ${PORT}`)
 })

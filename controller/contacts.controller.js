@@ -1,13 +1,17 @@
 import Contact from "../models/contacts.models.js"
-
-
-
+import mongoose from "mongoose"
+                          
 export  const getContacts = async (req,res) => { 
     const contacts = await Contact.find(req.params.id )
     res.render('home',{contacts})
     }
 
 export  const getContact = async (req,res) => { 
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)){
+        res.render('404',{message:"Contact Not Found! "})
+    }
+
     const contact = await Contact.findById(req.params.id )
     res.render('show-contact',{contact})
     }
